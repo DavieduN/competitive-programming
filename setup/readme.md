@@ -39,6 +39,17 @@ Paste the following function at the end of the file:
 mk() {
     g++ -fsanitize=address,undefined -fno-omit-frame-pointer -g -Wall -Wshadow -std=c++17 -Wno-unused-result -Wno-sign-compare -Wno-char-subscripts -DDEBUG "$1.cpp" -o "$1"
 }
+
+start() {
+    # Executa o Python. Mensagens de erro/logs vão para a tela, e o caminho final fica em TARGET_DIR
+    TARGET_DIR=$(python3 setup/start.py "$@")
+    
+    # Se a resposta do Python for um diretório válido, entra nele
+    if [ -d "$TARGET_DIR" ]; then
+        cd "$TARGET_DIR"
+        echo "[OK] Ambiente de competição pronto em: $TARGET_DIR"
+    fi
+}
 ```
 
 Save, exit, and apply the changes:

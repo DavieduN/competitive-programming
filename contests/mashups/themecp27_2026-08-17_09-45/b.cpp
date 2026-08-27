@@ -33,7 +33,7 @@ void solution(){
         if ((a>>i&1) == (b>>i&1)) continue;
         if (r < (x | (1ll<<i))) continue;
         if (b > a) swap(a, b); // a >= b
-        if ((a>>i&1) && abs((1ll<<(i+1))+b-a) < abs(a-b)){
+        if ((a>>i&1) && (a^(1ll<<i)) > (b^(1ll<<i))){
             a ^= 1ll<<i;
             b ^= 1ll<<i;
             x ^= 1ll<<i;

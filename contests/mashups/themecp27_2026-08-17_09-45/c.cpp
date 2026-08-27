@@ -52,14 +52,14 @@ void solution(){
         b = mex;
         if (!used) a = mex, b = mex+1;
         arr.push_back({a, b});
-        dbg(a, b);
     }
     ll k = mxl+2;
-    vector<int> indeg (k), best (k);
+    vector<int> indeg (k), best (k), cnt (k);
     vector<vector<int>> g (k);
     for (auto [a, b]: arr){
         g[b].push_back(a);
         indeg[a]++;
+        cnt[a]++;
     }
     queue<int> q;
     for (int i=0; i<k; i++){
@@ -70,25 +70,21 @@ void solution(){
         auto x = q.front(); q.pop();
         for (auto y: g[x]){
             indeg[y]--;
-            best[y] = max(best[x], best[y]);
+            best[y] = max(best[y], best[x]);
             if (!indeg[y]) q.push(y);
         }
     }
 
     int sbest=0;
     for (auto [a, b]: arr){
-        dbg(a, best[a]);
-        sbest = max(sbest, best[a]);
+        sbest = max(sbest, a);
+        if (cnt[a] > 1) sbest = max(sbest, best[a]);
     }
-    dbg(sbest);
 
     ll ans=0;
-    for (int i=0; i<min(k, m+1); i++) ans += max(best[i], sbest);
+    for (int i=0; i<=min(k-1, m); i++) ans += max(best[i], sbest);
 
-    dbg(ans);
-    dbg(k, m);
-
-    if (m > k) ans += m * (m+1) - k * (k-1);
+    if (m >= k) ans += (m * (m+1) - k * (k-1))/2;
     cout << ans << '\n';
 }
 
